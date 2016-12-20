@@ -1,3 +1,5 @@
+package ocr;
+
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.lept.PIX;
