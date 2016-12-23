@@ -7,6 +7,8 @@ public class SimpleAlignment {
 
     private String str1;
     private String str2;
+    private String alignStr1;
+    private String alignStr2;
 
     private int s1Len;
     private int s2Len;
@@ -31,7 +33,25 @@ public class SimpleAlignment {
         return score[s2Len][s1Len];
     }
 
-    public void initMatrices() {
+    public String getAlignString1() {
+        if (alignStr1 != null) {
+            return alignStr1;
+        }
+
+        recovery();
+        return alignStr1;
+    }
+
+    public String getAlignString2() {
+        if (alignStr2 != null) {
+            return alignStr2;
+        }
+
+        recovery();
+        return alignStr2;
+    }
+
+    private void initMatrices() {
         score = initIntMatrix();
         backtrack = initCharMatrix();
 
@@ -98,5 +118,44 @@ public class SimpleAlignment {
                 }
             }
         }
+    }
+
+    private void recovery() {
+        int i = s1Len - 1;
+        int j = s2Len - 1;
+
+        final StringBuilder sb1 = new StringBuilder();
+        final StringBuilder sb2 = new StringBuilder();
+
+        while (i >= 0 && j >= 0) {
+            if (backtrack[j][i] == '↘') {
+                sb1.append(str1.charAt(i));
+                sb2.append(str2.charAt(j));
+                i--;
+                j--;
+            } else if (backtrack[j][i] == '↓') {
+                sb1.append(str1.charAt(i));
+                sb2.append('-');
+                i--;
+            } else {
+                sb1.append('-');
+                sb2.append(str2.charAt(j));
+                j--;
+            }
+        }
+
+        while (j < 0 && 0 <= i) {
+            sb1.append(str1.charAt(i));
+            sb2.append('-');
+            i--;
+        }
+        while (i < 0 && 0 <= j) {
+            sb1.append('-');
+            sb2.append(str2.charAt(j));
+            j--;
+        }
+
+        alignStr1 = sb1.reverse().toString();
+        alignStr2 = sb2.reverse().toString();
     }
 }
