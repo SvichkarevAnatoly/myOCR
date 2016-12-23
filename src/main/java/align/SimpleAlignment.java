@@ -14,6 +14,7 @@ public class SimpleAlignment {
     private int deletion;
     // за несовпадение
     private int mismatch;
+    private int match;
 
     // сравниваемые строки
     private String str1;
@@ -33,8 +34,13 @@ public class SimpleAlignment {
 
     // от соотношения двух этих параметров зависит выравнивание
     public SimpleAlignment(int deletion, int mismatch) {
+        this(deletion, mismatch, 1);
+    }
+
+    public SimpleAlignment(int deletion, int mismatch, int match) {
         this.deletion = deletion;
         this.mismatch = mismatch;
+        this.match = match;
     }
 
     // возвращает меру подобия двух строк,
@@ -118,7 +124,7 @@ public class SimpleAlignment {
                 final int up = score[i - 1][j] - deletion;
                 final int left = score[i][j - 1] - deletion;
 
-                final int adding = str2.charAt(i - 1) == str1.charAt(j - 1) ? 1 : -mismatch;
+                final int adding = str2.charAt(i - 1) == str1.charAt(j - 1) ? match : -mismatch;
                 final int diag = score[i - 1][j - 1] + adding;
 
                 final int maxUpLeft = Math.max(up, left);
@@ -132,7 +138,7 @@ public class SimpleAlignment {
             for (int j = 1; j < s1Len + 1; j++) {
                 if (score[i][j] == score[i - 1][j] - deletion) {
                     backtrack[i - 1][j - 1] = DOWN;
-                } else if (score[i][j] == score[i][j-1]){
+                } else if (score[i][j] == score[i][j - 1] - deletion) {
                     backtrack[i - 1][j - 1] = RIGHT;
                 } else {
                     backtrack[i - 1][j - 1] = DIAG;
@@ -178,5 +184,44 @@ public class SimpleAlignment {
 
         alignStr1 = sb1.reverse().toString();
         alignStr2 = sb2.reverse().toString();
+    }
+
+    void printScoreMatrix() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(' ').append('\t');
+        sb.append(' ').append('\t');
+        for (int j = 0; j < s1Len; j++) {
+            sb.append(str1.charAt(j)).append('\t');
+        }
+        sb.append('\n');
+        for (int i = 0; i < s2Len + 1; i++) {
+            if (i != 0) {
+                sb.append(str2.charAt(i - 1)).append('\t');
+            } else {
+                sb.append(' ').append('\t');
+            }
+            for (int j = 0; j < s1Len + 1; j++) {
+                sb.append(score[i][j]).append('\t');
+            }
+            sb.append('\n');
+        }
+        System.out.println(sb);
+    }
+
+    void printBacktrack() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(' ').append('\t');
+        for (int j = 0; j < s1Len; j++) {
+            sb.append(str1.charAt(j)).append('\t');
+        }
+        sb.append('\n');
+        for (int i = 0; i < s2Len; i++) {
+            sb.append(str2.charAt(i)).append('\t');
+            for (int j = 0; j < s1Len; j++) {
+                sb.append(backtrack[i][j]).append('\t');
+            }
+            sb.append('\n');
+        }
+        System.out.println(sb);
     }
 }
