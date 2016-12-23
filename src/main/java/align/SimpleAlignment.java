@@ -1,26 +1,44 @@
 package align;
 
 public class SimpleAlignment {
+    // символ делеции
+    public final static char DELETE = '-';
+
+    // внутренние символы для кодирования траектории
+    private final static char DOWN = '↓';
+    private final static char RIGHT = '→';
+    private final static char DIAG = '↘';
+
     // штрафы
+    // за делецию
     private int deletion;
+    // за несовпадение
     private int mismatch;
 
+    // сравниваемые строки
     private String str1;
     private String str2;
+    // выравнивания сравниваемых строк
     private String alignStr1;
     private String alignStr2;
 
+    // длины сравниваемых строк
     private int s1Len;
     private int s2Len;
 
+    // матрица подсчётов
     private int score[][];
+    // матрица для восстановления выравнивания
     private char backtrack[][];
 
+    // от соотношения двух этих параметров зависит выравнивание
     public SimpleAlignment(int deletion, int mismatch) {
         this.deletion = deletion;
         this.mismatch = mismatch;
     }
 
+    // возвращает меру подобия двух строк,
+    // строки не обязательно равной длины
     public int align(String string1, String string2) {
         str1 = string1;
         str2 = string2;
@@ -33,6 +51,8 @@ public class SimpleAlignment {
         return score[s2Len][s1Len];
     }
 
+    // вернуть первую выровненную строку
+    // предварительно нужно вызвать align(string1, string2)
     public String getAlignString1() {
         if (alignStr1 != null) {
             return alignStr1;
@@ -42,6 +62,8 @@ public class SimpleAlignment {
         return alignStr1;
     }
 
+    // вернуть вторую выровненную строку
+    // предварительно нужно вызвать align(string1, string2)
     public String getAlignString2() {
         if (alignStr2 != null) {
             return alignStr2;
@@ -109,12 +131,11 @@ public class SimpleAlignment {
         for (int i = 1; i < s2Len + 1; i++) {
             for (int j = 1; j < s1Len + 1; j++) {
                 if (score[i][j] == score[i - 1][j] - deletion) {
-                    // TODO: вынести в константы
-                    backtrack[i - 1][j - 1] = '↓';
+                    backtrack[i - 1][j - 1] = DOWN;
                 } else if (score[i][j] == score[i][j-1]){
-                    backtrack[i - 1][j - 1] = '→';
+                    backtrack[i - 1][j - 1] = RIGHT;
                 } else {
-                    backtrack[i - 1][j - 1] = '↘';
+                    backtrack[i - 1][j - 1] = DIAG;
                 }
             }
         }
@@ -128,17 +149,17 @@ public class SimpleAlignment {
         final StringBuilder sb2 = new StringBuilder();
 
         while (i >= 0 && j >= 0) {
-            if (backtrack[j][i] == '↘') {
+            if (backtrack[j][i] == DIAG) {
                 sb1.append(str1.charAt(i));
                 sb2.append(str2.charAt(j));
                 i--;
                 j--;
-            } else if (backtrack[j][i] == '↓') {
+            } else if (backtrack[j][i] == DOWN) {
                 sb1.append(str1.charAt(i));
-                sb2.append('-');
+                sb2.append(DELETE);
                 i--;
-            } else {
-                sb1.append('-');
+            } else { // RIGHT
+                sb1.append(DELETE);
                 sb2.append(str2.charAt(j));
                 j--;
             }
@@ -146,11 +167,11 @@ public class SimpleAlignment {
 
         while (j < 0 && 0 <= i) {
             sb1.append(str1.charAt(i));
-            sb2.append('-');
+            sb2.append(DELETE);
             i--;
         }
         while (i < 0 && 0 <= j) {
-            sb1.append('-');
+            sb1.append(DELETE);
             sb2.append(str2.charAt(j));
             j--;
         }
