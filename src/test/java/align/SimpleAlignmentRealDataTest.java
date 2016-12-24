@@ -56,8 +56,8 @@ public class SimpleAlignmentRealDataTest {
         for (String foodName : TestRealData.food30Names) {
             final int score = alignment.align(ocrChicken, foodName);
             System.out.println("score = " + score);
-            System.out.println(alignment.getAlignString1());
             System.out.println(alignment.getAlignString2());
+            System.out.println(alignment.getAlignString1());
             System.out.println();
 
             if (score > maxScore) {
@@ -69,9 +69,9 @@ public class SimpleAlignmentRealDataTest {
         System.out.println("--------------------------------------");
         final int score = alignment.align(ocrChicken, maxScoreFoodName);
         System.out.println("score = " + score);
-        System.out.println(alignment.getAlignString1());
         final String maxScoreAlignment = alignment.getAlignString2();
         System.out.println(maxScoreAlignment);
+        System.out.println(alignment.getAlignString1());
         assertThat(maxScoreAlignment, is(expectedChickenAlignment));
     }
 }
