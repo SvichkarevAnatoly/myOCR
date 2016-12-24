@@ -32,6 +32,10 @@ public class SimpleAlignment {
     // матрица для восстановления выравнивания
     private char backtrack[][];
 
+    public SimpleAlignment() {
+        this(1, 1, 1);
+    }
+
     // от соотношения двух этих параметров зависит выравнивание
     public SimpleAlignment(int deletion, int mismatch) {
         this(deletion, mismatch, 1);
@@ -161,13 +165,13 @@ public class SimpleAlignment {
                 i--;
                 j--;
             } else if (backtrack[j][i] == DOWN) {
-                sb1.append(str1.charAt(i));
-                sb2.append(DELETE);
-                i--;
-            } else { // RIGHT
                 sb1.append(DELETE);
                 sb2.append(str2.charAt(j));
                 j--;
+            } else { // RIGHT
+                sb1.append(str1.charAt(i));
+                sb2.append(DELETE);
+                i--;
             }
         }
 
