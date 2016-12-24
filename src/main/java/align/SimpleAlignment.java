@@ -64,10 +64,6 @@ public class SimpleAlignment {
     // вернуть первую выровненную строку
     // предварительно нужно вызвать align(string1, string2)
     public String getAlignString1() {
-        if (alignStr1 != null) {
-            return alignStr1;
-        }
-
         recovery();
         return alignStr1;
     }
@@ -75,10 +71,6 @@ public class SimpleAlignment {
     // вернуть вторую выровненную строку
     // предварительно нужно вызвать align(string1, string2)
     public String getAlignString2() {
-        if (alignStr2 != null) {
-            return alignStr2;
-        }
-
         recovery();
         return alignStr2;
     }
