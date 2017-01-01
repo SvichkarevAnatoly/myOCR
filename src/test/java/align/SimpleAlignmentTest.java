@@ -32,11 +32,11 @@ public class SimpleAlignmentTest {
 
     @Test
     public void alignEnglishWords() throws Exception {
-        final SimpleAlignment alignment = new SimpleAlignment(1, 2);
+        final SimpleAlignment alignment = new SimpleAlignment();
         final String v = "PLEASANTLY";
         final String w = "MEANLY";
         alignment.align(v, w);
-        assertThat(alignment.getAlignString1(), is('-' + v));
-        assertThat(alignment.getAlignString2(), is("M-----EANLY"));
+        assertThat(alignment.getAlignString1(), is(v));
+        assertThat(alignment.getAlignString2(), is("M-EA--N-LY"));
     }
 }
