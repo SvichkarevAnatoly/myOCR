@@ -22,7 +22,8 @@ public class ImageTest {
 
     @Before
     public void setUp() throws Exception {
-        final File inputImageFile = tempFolder.newFile(inputImageFileName);
+        final String root = getClass().getResource("/").getFile();
+        final File inputImageFile = new File(root, inputImageFileName);
         inputImage = new Image(inputImageFile);
         outputImageFile = new File(tempFolder.getRoot(), outputImageFileName);
     }
@@ -32,5 +33,15 @@ public class ImageTest {
         assertThat(outputImageFile.exists(), is(false));
         inputImage.save(outputImageFile);
         assertThat(outputImageFile.exists(), is(true));
+    }
+
+    @Test
+    public void getWidth() throws Exception {
+        assertThat(inputImage.getWidth(), is(414));
+    }
+
+    @Test
+    public void getHeight() throws Exception {
+        assertThat(inputImage.getHeight(), is(512));
     }
 }

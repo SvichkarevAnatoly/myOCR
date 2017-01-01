@@ -30,13 +30,13 @@ public class Image {
         return iplImage.height();
     }
 
-    public void load(File imageFile) {
-        final String imageFilePath = imageFile.getAbsolutePath();
-        iplImage = cvLoadImage(imageFilePath);
-    }
-
     public void save(File file) {
         final String imageFilePath = file.getAbsolutePath();
         cvSaveImage(imageFilePath, iplImage);
+    }
+
+    private void load(File imageFile) {
+        final String imageFilePath = imageFile.getAbsolutePath();
+        iplImage = cvLoadImage(imageFilePath);
     }
 }
