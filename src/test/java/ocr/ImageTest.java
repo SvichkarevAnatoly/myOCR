@@ -16,7 +16,6 @@ public class ImageTest {
     private final File imageFile = new File(folderToSave, imageFileName);
     private final File savedFile = new File(folderToSave, savedFileName);
 
-
     @Test
     public void constructorAndSave() throws Exception {
         assertThat(imageFile.exists(), is(true));
@@ -26,17 +25,6 @@ public class ImageTest {
         assertThat(savedFile.exists(), is(false));
         image.save(savedFile);
         assertThat(savedFile.exists(), is(true));
-    }
-
-    @Test
-    public void scale() throws Exception {
-        final int scalePercent = 50;
-
-        final Image image = new Image(imageFile);
-        final Image scaledImage = image.scale(scalePercent);
-
-        assertThat(scaledImage.getWidth(), is(image.getWidth() / 2));
-        assertThat(scaledImage.getHeight(), is(image.getHeight() / 2));
     }
 
     @After
