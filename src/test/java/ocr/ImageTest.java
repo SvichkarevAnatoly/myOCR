@@ -1,7 +1,9 @@
 package ocr;
 
-import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 
@@ -9,27 +11,26 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 public class ImageTest {
-    private final String imageFileName = "image.jpg";
-    private final String savedFileName = "savedImage.jpg";
+    private final String inputImageFileName = "image.jpg";
+    private final String outputImageFileName = "savedImage.jpg";
 
-    private final String folderToSave = getClass().getResource("/").getFile();
-    private final File imageFile = new File(folderToSave, imageFileName);
-    private final File savedFile = new File(folderToSave, savedFileName);
+    private Image inputImage;
+    private File outputImageFile;
 
-    @Test
-    public void constructorAndSave() throws Exception {
-        assertThat(imageFile.exists(), is(true));
+    @Rule
+    public final TemporaryFolder tempFolder = new TemporaryFolder();
 
-        final Image image = new Image(imageFile);
-
-        assertThat(savedFile.exists(), is(false));
-        image.save(savedFile);
-        assertThat(savedFile.exists(), is(true));
+    @Before
+    public void setUp() throws Exception {
+        final File inputImageFile = tempFolder.newFile(inputImageFileName);
+        inputImage = new Image(inputImageFile);
+        outputImageFile = new File(tempFolder.getRoot(), outputImageFileName);
     }
 
-    @After
-    public void tearDown() throws Exception {
-        savedFile.delete();
-        assertThat(savedFile.exists(), is(false));
+    @Test
+    public void save() throws Exception {
+        assertThat(outputImageFile.exists(), is(false));
+        inputImage.save(outputImageFile);
+        assertThat(outputImageFile.exists(), is(true));
     }
 }
