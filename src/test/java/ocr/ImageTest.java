@@ -29,17 +29,15 @@ public class ImageTest {
     }
 
     @Test
-    public void loadAndSave() throws Exception {
-        assertThat(imageFile.exists(), is(true));
+    public void scale() throws Exception {
+        final int scalePercent = 50;
 
-        final Image image = new Image();
-        image.load(imageFile);
+        final Image image = new Image(imageFile);
+        final Image scaledImage = image.scale(scalePercent);
 
-        assertThat(savedFile.exists(), is(false));
-        image.save(savedFile);
-        assertThat(savedFile.exists(), is(true));
+        assertThat(scaledImage.getWidth(), is(image.getWidth() / 2));
+        assertThat(scaledImage.getHeight(), is(image.getHeight() / 2));
     }
-
 
     @After
     public void tearDown() throws Exception {
