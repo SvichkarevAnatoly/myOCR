@@ -16,6 +16,14 @@ public class Image {
         load(imageFile);
     }
 
+    public IplImage getImage() {
+        return iplImage;
+    }
+
+    public void setImage(IplImage iplImage) {
+        this.iplImage = iplImage;
+    }
+
     public void load(File imageFile) {
         final String imageFilePath = imageFile.getAbsolutePath();
         iplImage = cvLoadImage(imageFilePath);
