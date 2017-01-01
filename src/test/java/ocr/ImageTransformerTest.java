@@ -1,6 +1,5 @@
 package ocr;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,19 +9,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 public class ImageTransformerTest {
-    private final String imageFileName = "image.jpg";
-    private final String savedFileName = "savedImage.jpg";
-
+    private final String inputImageFileName = "image.jpg";
     private Image inputImage;
-    private File savedFile;
 
     @Before
     public void setUp() throws Exception {
         final String folderToSave = getClass().getResource("/").getFile();
-        final File imageFile = new File(folderToSave, imageFileName);
-        savedFile = new File(folderToSave, savedFileName);
-
-        inputImage = new Image(imageFile);
+        final File inputImageFile = new File(folderToSave, inputImageFileName);
+        inputImage = new Image(inputImageFile);
     }
 
     @Test
@@ -36,9 +30,10 @@ public class ImageTransformerTest {
         assertThat(scaledImage.getHeight(), is(inputImage.getHeight() / 2));
     }
 
-    @After
-    public void tearDown() throws Exception {
-        savedFile.delete();
-        assertThat(savedFile.exists(), is(false));
+    @Test
+    public void toGray() throws Exception {
+        // TODO:
+        final ImageTransformer transformer = new ImageTransformer(inputImage);
+        final Image grayImage = transformer.toGray();
     }
 }
